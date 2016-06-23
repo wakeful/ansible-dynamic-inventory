@@ -1,11 +1,16 @@
 #!/usr/bin/env python
 import json
 import re
-
-with open('terraform.tfstate') as tf_data:
-  data = json.load(tf_data)
+import sys
 
 hosts = {}
+
+try:
+  with open('terraform.tfstate') as tf_data:
+    data = json.load(tf_data)
+except:
+  print json.dumps(hosts)
+  sys.exit(0)
 
 for x, y in data["modules"][0]["resources"].iteritems():
   if re.search("^openstack_compute_instance_v2", x):
